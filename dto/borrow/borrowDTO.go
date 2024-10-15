@@ -1,6 +1,6 @@
 package borrow
 
 type BorrowReturnRequest struct {
-	UserID uint `json:"user_id"`
-	BookID uint `json:"book_id"`
+	UserID uint `json:"user_id" binding:"required"`
+	BookID uint `json:"book_id" binding:"required"`
 }
