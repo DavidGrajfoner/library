@@ -18,14 +18,19 @@ func main() {
 
     database.Connect()
 
-    
-    r.GET("/users", controllers.GetUsers)
-    r.GET("/users/:id", controllers.GetUserByID)
-    r.POST("/users", controllers.CreateUser)
+    userRoutes := r.Group("/users")
+    {
+        userRoutes.GET("/", controllers.GetUsers)
+        userRoutes.GET("/:id", controllers.GetUserByID)
+        userRoutes.POST("/", controllers.CreateUser)
+    }
 
-    r.GET("/books", controllers.GetBooks)
-    r.GET("/books/:id", controllers.GetBookById)
-    r.POST("/books", controllers.CreateBook)
+    bookRoutes := r.Group("/books")
+    {
+        bookRoutes.GET("/", controllers.GetBooks)
+        bookRoutes.GET("/:id", controllers.GetBookById)
+        bookRoutes.POST("/", controllers.CreateBook)
+    }
     
     r.POST("/borrow", controllers.BorrowBook)
     r.POST("/return", controllers.ReturnBook)
