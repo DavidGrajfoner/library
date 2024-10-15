@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2a135346-804e-48ec-8cd2-8576a5591047",
+		"_postman_id": "a34fe8df-bc73-4c96-80e2-44e4d4e9016b",
 		"name": "Library",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "36663198"
+		"_exporter_id": "37857539"
 	},
 	"item": [
 		{
@@ -35,7 +35,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\": \"David\",\r\n    \"last_name\": \"Test\"\r\n}",
+							"raw": "{\r\n    \"first_name\": \"Lionel\",\r\n    \"last_name\": \"Messi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,6 +51,26 @@
 							"port": "8080",
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
 							]
 						}
 					},
@@ -75,6 +95,26 @@
 							"port": "8080",
 							"path": [
 								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBookById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/books/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"books",
+								"1"
 							]
 						}
 					},
@@ -131,6 +171,34 @@
 							"port": "8080",
 							"path": [
 								"return"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createBook",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Great Gatsby\",\r\n    \"quantity\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"books"
 							]
 						}
 					},
