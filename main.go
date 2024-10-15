@@ -3,12 +3,18 @@ package main
 import (
 	"library/controllers"
 	"library/database"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
     r := gin.Default()
+
+    err := r.SetTrustedProxies([]string{"192.168.0.0/16", "127.0.0.1"})
+    if err != nil {
+        log.Fatal("Failed to set trusted proxies:", err)
+    }
 
     database.Connect()
 
