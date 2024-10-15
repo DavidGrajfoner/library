@@ -5,6 +5,7 @@ import (
 	"library/models"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -16,7 +17,7 @@ var DB *gorm.DB
 func Connect() {
     err := godotenv.Load()
     if err != nil {
-        log.Fatal("Error loading .env file")
+        log.Fatalf("Error loading .env file: %v", err)
     }
 
     host := os.Getenv("DB_HOST")
@@ -31,8 +32,35 @@ func Connect() {
 
     DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
     if err != nil {
-        log.Fatal("Failed to connect to the database:", err)
+        log.Fatalf("Failed to connect to the database. DSN: %s, Error: %v", dsn, err)
     }
-    
-    DB.AutoMigrate(&models.User{}, &models.Book{}, &models.Borrow{})
+
+    sqlDB, err := DB.DB()
+    if err != nil {
+        log.Fatalf("Failed to get database object from GORM: %v", err)
+    }
+
+    sqlDB.SetMaxIdleConns(10)
+    sqlDB.SetMaxOpenConns(100)
+    sqlDB.SetConnMaxLifetime(30 * time.Minute)
+
+    err = DB.AutoMigrate(&models.User{}, &models.Book{}, &models.Borrow{})
+    if err != nil {
+        log.Fatalf("Error during migration: %v", err)
+    }
+
+    log.Println("Database connection successfully established!")
+}
+
+func Close() {
+    sqlDB, err := DB.DB()
+    if err != nil {
+        log.Fatalf("Failed to get database object for closing: %v", err)
+    }
+
+    if err := sqlDB.Close(); err != nil {
+        log.Fatalf("Error closing the database connection: %v", err)
+    }
+
+    log.Println("Database connection closed successfully.")
 }
