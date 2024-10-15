@@ -11,7 +11,7 @@ This project is a Library Management System built using Go and PostgreSQL. It al
 
 ## Features
 
-- User authentication
+- User creation
 - Borrowing and returning books
 - Managing a collection of books
 - PostgreSQL as the database backend
