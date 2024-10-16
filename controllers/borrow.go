@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func validateUser(tx *gorm.DB, userID uint) (*models.User, error) {
+func getUserByID(tx *gorm.DB, userID uint) (*models.User, error) {
 	var user models.User
 	if err := tx.First(&user, userID).Error; err != nil {
 		return nil, err
@@ -19,7 +19,7 @@ func validateUser(tx *gorm.DB, userID uint) (*models.User, error) {
 	return &user, nil
 }
 
-func validateBook(tx *gorm.DB, bookID uint) (*models.Book, error) {
+func getBookByID(tx *gorm.DB, bookID uint) (*models.Book, error) {
 	var book models.Book
 	if err := tx.First(&book, bookID).Error; err != nil {
 		return nil, err
@@ -35,13 +35,13 @@ func BorrowBook(c *gin.Context) {
 	}
 
 	err := database.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
-		_, err := validateUser(tx, req.UserID)
+		_, err := getUserByID(tx, req.UserID)
 		if err != nil {
 			utils.HandleError(c, http.StatusNotFound, "User not found", err)
 			return err
 		}
 
-		book, err := validateBook(tx, req.BookID)
+		book, err := getBookByID(tx, req.BookID)
 		if err != nil {
 			utils.HandleError(c, http.StatusNotFound, "Book not found", err)
 			return err
@@ -85,7 +85,7 @@ func ReturnBook(c *gin.Context) {
 	}
 
 	err := database.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
-		book, err := validateBook(tx, req.BookID)
+		book, err := getBookByID(tx, req.BookID)
 		if err != nil {
 			utils.HandleError(c, http.StatusNotFound, "Book not found", err)
 			return err
