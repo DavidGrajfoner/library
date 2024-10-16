@@ -35,7 +35,7 @@ func BorrowBook(c *gin.Context) {
 	}
 
 	err := database.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
-		_, err := getUserByID(tx, req.UserID)
+		user, err := getUserByID(tx, req.UserID)
 		if err != nil {
 			utils.HandleError(c, http.StatusNotFound, "User not found", err)
 			return err
@@ -58,16 +58,25 @@ func BorrowBook(c *gin.Context) {
 			return err
 		}
 
-		borrow := models.Borrow{
+		b := models.Borrow{
 			UserID: req.UserID,
 			BookID: req.BookID,
+            User: *user,
+            Book: *book,
 		}
-		if err := tx.Create(&borrow).Error; err != nil {
+		if err := tx.Create(&b).Error; err != nil {
 			utils.HandleError(c, http.StatusInternalServerError, "Failed to create borrow record", err)
 			return err
 		}
 
-		c.JSON(http.StatusOK, borrow)
+        borrowResponse := borrow.BorrowResponse{
+            ID:        b.ID,
+            UserID:    user.ID,
+            BookID:    book.ID,
+            BookTitle: book.Title,
+        }
+
+		c.JSON(http.StatusOK, borrowResponse)
 		return nil
 	})
 
