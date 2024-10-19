@@ -31,7 +31,7 @@ Follow these steps to set up the project on your local machine:
 1. **Clone the Repository**:
    Open a terminal and run:
    ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
+   git clone https://github.com/DavidGrajfoner/library.git
    cd library
 
 2. **Build and Start the Containers**
